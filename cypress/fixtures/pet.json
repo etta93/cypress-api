@@ -1,0 +1,35 @@
+{
+    "petDog":{
+        "id":123,
+        "category": {
+            "id": 12,
+            "name": "dog"
+        },
+        "name": "pomeranian",
+        "photoUrls": [
+            "https://arenahewan.com/wp-content/uploads/2018/05/anjing-mini-pom-1280x720.jpg"
+        ],
+        "tags": {
+                "id": 12,
+                "name": "toy dog"
+        },
+        "status": "available"
+    },
+    "petCat":{
+        "id":1234,
+        "category": {
+            "id": 123,
+            "name": "cat"
+        },
+        "name": "tabby",
+        "photoUrls": [
+            "https://www.ruparupa.com/blog/wp-content/uploads/2021/04/image-161.png"
+        ],
+        "tags": {
+                "id": 123,
+                "name": "toy cat"
+        },
+        "status": "unavailable"
+    }
+    
+}
