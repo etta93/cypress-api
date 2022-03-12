@@ -1,4 +1,4 @@
-# What I used for cucumber automation sript
+# What I used for cypress automation sript
 
 - cypress
 - IDE : VS Code
