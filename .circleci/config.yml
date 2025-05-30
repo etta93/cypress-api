@@ -3,65 +3,28 @@ orbs:
   node: circleci/node@5
 jobs:
   test-node:
+    # Install node dependencies and run tests
     executor: node/default
     steps:
       - checkout
       - node/install-packages:
           pkg-manager: npm
       - run:
-          name: Install Xvfb (Cypress dependency)
-          command: sudo apt-get update && sudo apt-get install -y xvfb
-      - run:
           name: Run tests
-          command: npx cypress open
-  cypress-test:
-    docker:
-      - image: cimg/node:18.20.5
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - v1-npm-deps-{{ checksum "package-lock.json" }}
-            - v1-npm-deps-
-      - run:
-          name: Install dependencies
-          command: npm ci
-      - save_cache:
-          paths:
-            - ~/.npm
-            - node_modules
-          key: v1-npm-deps-{{ checksum "package-lock.json" }}
-      - run:
-          name: Run Cypress tests
           command: npx cypress run
-      - store_artifacts:
-          path: cypress/videos
-          destination: cypress-videos
-      - store_artifacts:
-          path: cypress/screenshots
-          destination: cypress-screenshots
-  cypress-run:
+  deploy:
+    # This is an example deploy job, not actually used by the workflow
     docker:
-      - image: cimg/node:18.20.5
+      - image: cimg/base:stable
     steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - v1-npm-deps-{{ checksum "package-lock.json" }}
-            - v1-npm-deps-
+      # Replace this with steps to deploy to users
       - run:
-          name: Install dependencies
-          command: npm ci
-      - run:
-          name: Run npx cypress run
-          command: npx cypress run
+          name: deploy
+          command: '#e.g. ./deploy.sh'
 workflows:
   build-and-test:
     jobs:
       - test-node
-      - cypress-test:
-          requires:
-            - test-node
-      - cypress-run:
-          requires:
-            - test-node
+    # - deploy:
+    #     requires:
+    #       - test-node
