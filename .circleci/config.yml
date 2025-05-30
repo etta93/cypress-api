@@ -37,10 +37,28 @@ jobs:
       - store_artifacts:
           path: cypress/screenshots
           destination: cypress-screenshots
+  cypress-run:
+    docker:
+      - image: cimg/node:18.20.5
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-npm-deps-{{ checksum "package-lock.json" }}
+            - v1-npm-deps-
+      - run:
+          name: Install dependencies
+          command: npm ci
+      - run:
+          name: Run npx cypress run
+          command: npx cypress run
 workflows:
   build-and-test:
     jobs:
       - test-node
       - cypress-test:
+          requires:
+            - test-node
+      - cypress-run:
           requires:
             - test-node
