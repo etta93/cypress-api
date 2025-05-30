@@ -3,7 +3,6 @@ orbs:
   node: circleci/node@5
 jobs:
   test-node:
-    # Install node dependencies and run tests
     executor: node/default
     steps:
       - checkout
@@ -12,19 +11,36 @@ jobs:
       - run:
           name: Run tests
           command: echo "No test specified in package.json"
-  deploy:
-    # This is an example deploy job, not actually used by the workflow
+  cypress-test:
     docker:
-      - image: cimg/base:stable
+      - image: cimg/node:18.20.5
     steps:
-      # Replace this with steps to deploy to users
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-npm-deps-{{ checksum "package-lock.json" }}
+            - v1-npm-deps-
       - run:
-          name: deploy
-          command: '#e.g. ./deploy.sh'
+          name: Install dependencies
+          command: npm ci
+      - save_cache:
+          paths:
+            - ~/.npm
+            - node_modules
+          key: v1-npm-deps-{{ checksum "package-lock.json" }}
+      - run:
+          name: Run Cypress tests
+          command: npx cypress run
+      - store_artifacts:
+          path: cypress/videos
+          destination: cypress-videos
+      - store_artifacts:
+          path: cypress/screenshots
+          destination: cypress-screenshots
 workflows:
   build-and-test:
     jobs:
       - test-node
-    # - deploy:
-    #     requires:
-    #       - test-node
+      - cypress-test:
+          requires:
+            - test-node
