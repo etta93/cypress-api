@@ -10,7 +10,7 @@ jobs:
           pkg-manager: npm
       - run:
           name: Run tests
-          command: echo "No test specified in package.json"
+          command: npx cypress open
   cypress-test:
     docker:
       - image: cimg/node:18.20.5
