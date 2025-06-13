@@ -6,4 +6,3 @@ workflows:
     jobs:
       - cypress/run:
           cypress-command: npx cypress run
-
