@@ -1,8 +1,8 @@
-version: '2.1'
+version: 2.1
 orbs:
   cypress: cypress-io/cypress@4
 workflows:
   use-my-orb:
     jobs:
       - cypress/run:
-          start-command: npm run start
+          cypress-command: npx cypress run
